@@ -129,6 +129,8 @@ jobs:
           echo "githubOrg=$($result.body.gitHubOrganisation)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
 
       - name: Comment to issue - Acknowledge
+        if: |
+          steps.issue.outputs.requestType == 'GitHub 조직 초대 요청'
         uses: actions-cool/issues-helper@v3
         with:
           actions: "create-comment"
@@ -142,7 +144,8 @@ jobs:
 
       - name: Add a label - Invalid
         if: |
-          steps.issue.outputs.isValid == 'false'
+          steps.issue.outputs.isValid == 'false' &&
+          steps.issue.outputs.requestType == 'GitHub 조직 초대 요청'
         shell: bash
         env:
           GH_TOKEN: ${{ steps.bot-token.outputs.token }}
@@ -153,7 +156,8 @@ jobs:
 
       - name: Comment to issue - Invalid
         if: |
-          steps.issue.outputs.isValid == 'false'
+          steps.issue.outputs.isValid == 'false' &&
+          steps.issue.outputs.requestType == 'GitHub 조직 초대 요청'
         uses: actions-cool/issues-helper@v3
         with:
           actions: "create-comment"
@@ -171,7 +175,8 @@ jobs:
 
       - name: Close issue - Invalid
         if: |
-          steps.issue.outputs.isValid == 'false'
+          steps.issue.outputs.isValid == 'false' &&
+          steps.issue.outputs.requestType == 'GitHub 조직 초대 요청'
         shell: bash
         env:
           GH_TOKEN: ${{ steps.bot-token.outputs.token }}
@@ -181,6 +186,9 @@ jobs:
             -R ${{ github.event.repository.full_name }}
 
       - name: Checkout repository
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'GitHub 조직 초대 요청'
         uses: actions/checkout@v6
 
       - name: Invite user to organization
