@@ -10,6 +10,7 @@
 
 GitHub 사용 방법 교육을 끝마친 후 자신의 GitHub ID를 제출합니다.
 
+- **제출 시작시각: 2026년 4월 20일 09시 (KST)**
 - **제출 마감시각: 2026년 4월 25일 17시 (KST)**
 - GitHub 사용 방법 교육 자료 👉 [![링크](https://img.shields.io/badge/링크-2088FF?style=for-the-badge)](https://github.com/innodg/hello-github)
 - GitHub 조직 초대 요청하기 👉 [![초대 요청](https://img.shields.io/badge/초대%20요청-2088FF?style=for-the-badge)](../../issues/new/choose)
@@ -26,6 +27,7 @@ GitHub 사용 방법 교육을 끝마친 후 자신의 GitHub ID를 제출합니
 
 아래 링크를 통해 C# 자격증을 취득한 후 자격증 링크를 제출합니다. 웹 브라우저의 자동 번역 기능을 이용하면 한국어로 읽을 수 있습니다.
 
+- **제출 시작시각: 2026년 4월 20일 09시 (KST)**
 - **제출 마감시각: 2026년 4월 25일 17시 (KST)**
 - C# 자격증 준비하기 👉 [![링크](https://img.shields.io/badge/링크-512BD4?style=for-the-badge)](https://aka.ms/csharp-certification)
 - C# 자격증 링크 제출하기 👉 [![자격증 제출](https://img.shields.io/badge/자격증%20제출-512BD4?style=for-the-badge)](../../issues/new/choose)
