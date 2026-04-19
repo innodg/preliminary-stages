@@ -69,188 +69,344 @@ jobs:
           $payload = Get-Content "${{ github.workspace }}/payload.json"
           $payload
 
-      # - name: Install .NET SDK
-      #   uses: actions/setup-dotnet@v5
-      #   with:
-      #     dotnet-version: '10.x'
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.x'
 
-      # - name: Checkout quest validator repository
-      #   uses: actions/checkout@v6
-      #   with:
-      #     repository: innodg/operations
-      #     path: operations
-      #     token: ${{ steps.bot-token.outputs.token }}
+      - name: Checkout quest validator repository
+        uses: actions/checkout@v6
+        with:
+          repository: innodg/operations
+          path: operations
+          token: ${{ steps.bot-token.outputs.token }}
 
-      # # - name: Restore applicant details
-      # #   shell: pwsh
-      # #   env:
-      # #     APPLICANTS: ${{ secrets.APPLICANTS }}
-      # #   run: |
-      # #     $env:APPLICANTS | Out-File -FilePath "${{ github.workspace }}/operations/data/applicants.csv" -Encoding utf8
-
-      # - name: Validate issue
-      #   shell: bash
+      # - name: Restore applicant details
+      #   shell: pwsh
+      #   env:
+      #     APPLICANTS: ${{ secrets.APPLICANTS }}
       #   run: |
-      #     pushd ./operations
+      #     $env:APPLICANTS | Out-File -FilePath "${{ github.workspace }}/operations/data/applicants.csv" -Encoding utf8
 
-      #     dotnet run --project ./src/QuestValidator.IssuePayloadCheck.ConsoleApp -- \
-      #       --input "${{ github.workspace }}/payload.json" \
-      #       --output "${{ github.workspace }}/issue.json" \
-      #       --start-date "${{ vars.START_DATE_CSHARP_CERT }}" \
-      #       --due-date "${{ vars.DUE_DATE_CSHARP_CERT }}"
+      - name: Validate issue
+        shell: bash
+        run: |
+          pushd ./operations
+
+          dotnet run --project ./src/QuestValidator.IssuePayloadCheck.ConsoleApp -- \
+            --input "${{ github.workspace }}/payload.json" \
+            --output "${{ github.workspace }}/issue.json" \
+            --start-date "${{ vars.START_DATE_CSHARP_CERT }}" \
+            --due-date "${{ vars.DUE_DATE_CSHARP_CERT }}"
           
-      #     popd
+          popd
 
-      # - name: Verify result payload
-      #   shell: pwsh
-      #   run: |
-      #     $result = Get-Content "${{ github.workspace }}/issue.json" | ConvertFrom-Json
-      #     $result
+      - name: Verify result payload
+        shell: pwsh
+        run: |
+          $result = Get-Content "${{ github.workspace }}/issue.json" | ConvertFrom-Json
+          $result
 
-      # - name: Check validation result
-      #   id: issue
-      #   shell: pwsh
-      #   run: |
-      #     $result = Get-Content "${{ github.workspace }}/issue.json" | ConvertFrom-Json
+      - name: Check validation result
+        id: issue
+        shell: pwsh
+        run: |
+          $result = Get-Content "${{ github.workspace }}/issue.json" | ConvertFrom-Json
 
-      #     $tzi = [TimeZoneInfo]::FindSystemTimeZoneById("Asia/Seoul")
+          $tzi = [TimeZoneInfo]::FindSystemTimeZoneById("Asia/Seoul")
 
-      #     # Common
-      #     echo "issueNumber=$($result.number)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
-      #     echo "requestType=$($result.body.requestType)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
-      #     echo "submittedAt=$([TimeZoneInfo]::ConvertTime($result.createdAt, $tzi).ToString("yyyy-MM-dd HH:mm:ss.fff") + " +09:00")" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
-      #     echo "dueBy=$([TimeZoneInfo]::ConvertTime($result.dueDate, $tzi).ToString("yyyy-MM-dd HH:mm:ss.fff") + " +09:00")" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          # Common
+          echo "issueNumber=$($result.number)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "requestType=$($result.body.requestType)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "submittedAt=$([TimeZoneInfo]::ConvertTime($result.createdAt, $tzi).ToString("yyyy-MM-dd HH:mm:ss.fff") + " +09:00")" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "dueBy=$([TimeZoneInfo]::ConvertTime($result.dueDate, $tzi).ToString("yyyy-MM-dd HH:mm:ss.fff") + " +09:00")" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
 
-      #     # Verification result
-      #     echo "isValid=$($result.isValid)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
-      #     echo "invalidReasons=$('<ul><li> ' + $($result.invalidReasons -join '</li><li> ') + '</li></ul>')" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          # Verification result
+          echo "isValid=$($result.isValid)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "invalidReasons=$('<ul><li> ' + $($result.invalidReasons -join '</li><li> ') + '</li></ul>')" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
 
-      #     # Invitation details
-      #     echo "githubId=$($result.createdBy)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
-      #     echo "githubOrg=$($result.body.gitHubOrganisation)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          # Certification details
+          echo "githubId=$($result.createdBy)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "certLink=$($result.body.cSharpCertLink)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "certName=$($result.body.cSharpCertName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "certDate=$($result.body.cSharpCertDate)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "candidateName=$($result.body.cSharpCertCandidateName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
 
-      # - name: Comment to issue - Acknowledge
-      #   if: |
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   uses: actions-cool/issues-helper@v3
-      #   with:
-      #     actions: "create-comment"
-      #     token: ${{ steps.bot-token.outputs.token }}
-      #     issue-number: ${{ steps.issue.outputs.issueNumber }}
-      #     emoji: "+1,rocket"
-      #     body: |
-      #       👋🏼 @${{ steps.issue.outputs.githubId }} 님!
+      - name: Comment to issue - Acknowledge
+        if: |
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: "create-comment"
+          token: ${{ steps.bot-token.outputs.token }}
+          issue-number: ${{ steps.issue.outputs.issueNumber }}
+          emoji: "+1,rocket"
+          body: |
+            👋🏼 @${{ steps.issue.outputs.githubId }} 님!
 
-      #       생성하신 이슈는 현재 확인 중이며, 완료 여부를 확인한 후 다시 알려드리겠습니다.
+            생성하신 이슈는 현재 확인 중이며, 완료 여부를 확인한 후 다시 알려드리겠습니다.
 
-      # - name: Add a label - Invalid
-      #   if: |
-      #     steps.issue.outputs.isValid == 'false' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   shell: bash
-      #   env:
-      #     GH_TOKEN: ${{ steps.bot-token.outputs.token }}
-      #   run: |
-      #     gh issue edit ${{ steps.issue.outputs.issueNumber }} \
-      #       --add-label "invalid" \
-      #       -R ${{ github.event.repository.full_name }}
+      - name: Add a label - Invalid
+        if: |
+          steps.issue.outputs.isValid == 'false' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue edit ${{ steps.issue.outputs.issueNumber }} \
+            --add-label "invalid" \
+            -R ${{ github.event.repository.full_name }}
 
-      # - name: Comment to issue - Invalid
-      #   if: |
-      #     steps.issue.outputs.isValid == 'false' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   uses: actions-cool/issues-helper@v3
-      #   with:
-      #     actions: "create-comment"
-      #     token: ${{ steps.bot-token.outputs.token }}
-      #     issue-number: ${{ steps.issue.outputs.issueNumber }}
-      #     body: |
-      #       👋🏼 @${{ steps.issue.outputs.githubId }} 님!
+      - name: Comment to issue - Invalid
+        if: |
+          steps.issue.outputs.isValid == 'false' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: "create-comment"
+          token: ${{ steps.bot-token.outputs.token }}
+          issue-number: ${{ steps.issue.outputs.issueNumber }}
+          body: |
+            👋🏼 @${{ steps.issue.outputs.githubId }} 님!
 
-      #       - 요청 시각: ${{ steps.issue.outputs.submittedAt }}
-      #       - 요청 마감 시각: ${{ steps.issue.outputs.dueBy }}
+            - 요청 시각: ${{ steps.issue.outputs.submittedAt }}
+            - 요청 마감 시각: ${{ steps.issue.outputs.dueBy }}
 
-      #       하지만 제출하신 요청은 다음과 같은 이유로 인해 유효하지 않습니다. 😢
+            하지만 제출하신 요청은 다음과 같은 이유로 인해 유효하지 않습니다. 😢
 
-      #       ${{ steps.issue.outputs.invalidReasons }}
+            ${{ steps.issue.outputs.invalidReasons }}
 
-      # - name: Close issue - Invalid
-      #   if: |
-      #     steps.issue.outputs.isValid == 'false' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   shell: bash
-      #   env:
-      #     GH_TOKEN: ${{ steps.bot-token.outputs.token }}
-      #   run: |
-      #     gh issue close ${{ steps.issue.outputs.issueNumber }} \
-      #       -c "제출한 요청이 유효하지 않습니다. 이슈를 닫습니다." \
-      #       -R ${{ github.event.repository.full_name }}
+      - name: Close issue - Invalid
+        if: |
+          steps.issue.outputs.isValid == 'false' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue close ${{ steps.issue.outputs.issueNumber }} \
+            -c "제출한 요청이 유효하지 않습니다. 이슈를 닫습니다." \
+            -R ${{ github.event.repository.full_name }}
 
-      # - name: Checkout repository
-      #   if: |
-      #     steps.issue.outputs.isValid == 'true' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   uses: actions/checkout@v6
+      - name: Checkout repository
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
+        uses: actions/checkout@v6
 
-      # - name: Invite user to organization
-      #   if: |
-      #     steps.issue.outputs.isValid == 'true' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   shell: pwsh
-      #   env:
-      #     GH_TOKEN: ${{ steps.bot-token.outputs.token }}
-      #   run: |
-      #     ${{ github.workspace }}/scripts/Invite-ToGitHub.ps1 `
-      #       -GitHubOrg "${{ steps.issue.outputs.githubOrg }}" `
-      #       -GitHubId "${{ steps.issue.outputs.githubId }}"
+      - name: Check membership
+        id: check-membership
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          $isMember = ${{ github.workspace }}/scripts/Check-GitHubMember.ps1 `
+            -Username "${{ steps.issue.outputs.githubId }}"
 
-      # - name: Add label - Complete
-      #   if: |
-      #     steps.issue.outputs.isValid == 'true' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   shell: bash
-      #   env:
-      #     GH_TOKEN: ${{ steps.bot-token.outputs.token }}
-      #   run: |
-      #     gh issue edit ${{ steps.issue.outputs.issueNumber }} \
-      #     --add-label "complete" \
-      #     -R ${{ github.event.repository.full_name }}
+          echo "isMember=$isMember" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+      
+      - name: Add a label - Not a member
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'false'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue edit ${{ steps.issue.outputs.issueNumber }} \
+            --add-label "invalid" \
+            -R ${{ github.event.repository.full_name }}
 
-      # - name: Remove label - request
-      #   if: |
-      #     steps.issue.outputs.isValid == 'true' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   shell: bash
-      #   env:
-      #     GH_TOKEN: ${{ steps.bot-token.outputs.token }}
-      #   run: |
-      #     gh issue edit ${{ steps.issue.outputs.issueNumber }} \
-      #     --remove-label "request" \
-      #     -R ${{ github.event.repository.full_name }}
+      - name: Comment to issue - Not a member
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'false'
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: "create-comment"
+          token: ${{ steps.bot-token.outputs.token }}
+          issue-number: ${{ steps.issue.outputs.issueNumber }}
+          body: |
+            👋🏼 @${{ steps.issue.outputs.githubId }} 님!
 
-      # - name: Comment to issue - Complete
-      #   if: |
-      #     steps.issue.outputs.isValid == 'true' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   uses: actions-cool/issues-helper@v3
-      #   with:
-      #     actions: "create-comment"
-      #     token: ${{ steps.bot-token.outputs.token }}
-      #     issue-number: ${{ steps.issue.outputs.issueNumber }}
-      #     emoji: "+1,rocket"
-      #     body: |
-      #       👋🏼 @${{ steps.issue.outputs.githubId }}님!
+            - 요청 시각: ${{ steps.issue.outputs.submittedAt }}
+            - 요청 마감 시각: ${{ steps.issue.outputs.dueBy }}
 
-      #       GitHub 계정에 등록한 이메일 주소로 초대장을 발송했습니다. 초대장을 수락하면 조직에 참여할 수 있습니다. 감사합니다!
+            하지만 제출하신 요청은 다음과 같은 이유로 인해 유효하지 않습니다. 😢
 
-      # - name: Close issue - Complete
-      #   if: |
-      #     steps.issue.outputs.isValid == 'true' &&
-      #     steps.issue.outputs.requestType == 'C# 자격증 취득 인증'
-      #   shell: bash
-      #   env:
-      #     GH_TOKEN: ${{ steps.bot-token.outputs.token }}
-      #   run: |
-      #     gh issue close ${{ steps.issue.outputs.issueNumber }} \
-      #       -c "초대 요청을 완료했습니다. 이슈를 닫습니다." \
-      #       -R ${{ github.event.repository.full_name }}
+            - GitHub 조직의 구성원이 아닙니다. 조직에 참여한 후 다시 C# 자격증 취득 인증 요청을 제출해 주세요.
+
+      - name: Close issue - Not a member
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'false'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue close ${{ steps.issue.outputs.issueNumber }} \
+            -c "제출한 요청이 유효하지 않습니다. 이슈를 닫습니다." \
+            -R ${{ github.event.repository.full_name }}
+
+      - name: Validate certification details
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true'
+        shell: bash
+        run: |
+          pushd ./operations
+
+          dotnet run --project ./src/QuestValidator.CSharpCertCheck.ConsoleApp -- \
+            --cert-link "${{ steps.issue.outputs.certLink }}" \
+            --cert-name "${{ steps.issue.outputs.certName }}" \
+            --candidate-name "${{ steps.issue.outputs.candidateName }}" \
+            --cert-date "${{ steps.issue.outputs.certDate }}" \
+            --output "${{ github.workspace }}/cert.json"
+          
+          popd
+
+      - name: Verify result payload - certification details
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true'
+        shell: pwsh
+        run: |
+          $result = Get-Content "${{ github.workspace }}/cert.json" | ConvertFrom-Json
+          $result
+
+      - name: Check validation result - certification details
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true'
+        id: cert
+        shell: pwsh
+        run: |
+          $result = Get-Content "${{ github.workspace }}/cert.json" | ConvertFrom-Json
+
+          # Verification result
+          echo "isValid=$($result.isValid)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "invalidReasons=$('<ul><li> ' + $($result.invalidReasons -join '</li><li> ') + '</li></ul>')" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+
+          # Certification details
+          echo "certLink=$($result.certificationUrl)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "certName=$($result.certificationName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "certDate=$($result.certificationDate)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+          echo "candidateName=$($result.candidateName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
+      
+      - name: Add a label - Invalid certification details
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true' &&
+          steps.cert.outputs.isValid == 'false'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue edit ${{ steps.issue.outputs.issueNumber }} \
+            --add-label "invalid" \
+            -R ${{ github.event.repository.full_name }}
+
+      - name: Comment to issue - Invalid certification details
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true' &&
+          steps.cert.outputs.isValid == 'false'
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: "create-comment"
+          token: ${{ steps.bot-token.outputs.token }}
+          issue-number: ${{ steps.issue.outputs.issueNumber }}
+          body: |
+            👋🏼 @${{ steps.issue.outputs.githubId }} 님!
+
+            - 요청 시각: ${{ steps.issue.outputs.submittedAt }}
+            - 요청 마감 시각: ${{ steps.issue.outputs.dueBy }}
+
+            하지만 제출하신 요청은 다음과 같은 이유로 인해 유효하지 않습니다. 😢
+
+            ${{ steps.cert.outputs.invalidReasons }}
+
+      - name: Close issue - Invalid certification details
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true' &&
+          steps.cert.outputs.isValid == 'false'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue close ${{ steps.issue.outputs.issueNumber }} \
+            -c "제출한 요청이 유효하지 않습니다. 이슈를 닫습니다." \
+            -R ${{ github.event.repository.full_name }}
+
+      - name: Add label - Complete
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true' &&
+          steps.cert.outputs.isValid == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue edit ${{ steps.issue.outputs.issueNumber }} \
+          --add-label "complete" \
+          -R ${{ github.event.repository.full_name }}
+
+      - name: Remove label - request
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true' &&
+          steps.cert.outputs.isValid == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue edit ${{ steps.issue.outputs.issueNumber }} \
+          --remove-label "request" \
+          -R ${{ github.event.repository.full_name }}
+
+      - name: Comment to issue - Complete
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true' &&
+          steps.cert.outputs.isValid == 'true'
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: "create-comment"
+          token: ${{ steps.bot-token.outputs.token }}
+          issue-number: ${{ steps.issue.outputs.issueNumber }}
+          emoji: "+1,rocket"
+          body: |
+            👋🏼 @${{ steps.issue.outputs.githubId }}님!
+
+            C# 자격증 취득 인증을 완료했습니다. 축하합니다! 🎉
+
+      - name: Close issue - Complete
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true' &&
+          steps.cert.outputs.isValid == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.bot-token.outputs.token }}
+        run: |
+          gh issue close ${{ steps.issue.outputs.issueNumber }} \
+            -c "C# 자격증 취득 인증을 완료했습니다. 이슈를 닫습니다." \
+            -R ${{ github.event.repository.full_name }}

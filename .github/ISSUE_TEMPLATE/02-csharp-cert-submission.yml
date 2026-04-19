@@ -70,7 +70,7 @@ body:
     id: csharp-cert-date
     attributes:
       label: C# 자격증 취득일
-      placeholder: 2026-04-20 (yyyy-mm-dd 형식으로 입력해 주세요)
+      placeholder: 2026-04-19 (자격증에 있는 날짜를 yyyy-mm-dd 형식으로 입력해 주세요)
     validations:
       required: true
 
