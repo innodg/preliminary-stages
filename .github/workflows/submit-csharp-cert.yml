@@ -255,6 +255,17 @@ jobs:
             -c "제출한 요청이 유효하지 않습니다. 이슈를 닫습니다." \
             -R ${{ github.event.repository.full_name }}
 
+      - name: Checkout quest validator repository - again
+        if: |
+          steps.issue.outputs.isValid == 'true' &&
+          steps.issue.outputs.requestType == 'C# 자격증 취득 인증' &&
+          steps.check-membership.outputs.isMember == 'true'
+        uses: actions/checkout@v6
+        with:
+          repository: innodg/operations
+          path: operations
+          token: ${{ steps.bot-token.outputs.token }}
+
       - name: Validate certification details
         if: |
           steps.issue.outputs.isValid == 'true' &&
@@ -263,6 +274,10 @@ jobs:
         shell: bash
         run: |
           pushd ./operations
+
+          dotnet restore && dotnet build
+
+          pwsh ./src/QuestValidator.CSharpCertCheck.ConsoleApp/bin/Debug/net10.0/playwright.ps1 install --with-deps
 
           dotnet run --project ./src/QuestValidator.CSharpCertCheck.ConsoleApp -- \
             --cert-link "${{ steps.issue.outputs.certLink }}" \

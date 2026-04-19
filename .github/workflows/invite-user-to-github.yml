@@ -202,7 +202,8 @@ jobs:
         run: |
           ${{ github.workspace }}/scripts/Invite-ToGitHub.ps1 `
             -GitHubOrg "${{ steps.issue.outputs.githubOrg }}" `
-            -GitHubId "${{ steps.issue.outputs.githubId }}"
+            -GitHubId "${{ steps.issue.outputs.githubId }}" `
+            -TeamSlug "preliminary-candidates"
 
       - name: Add label - Complete
         if: |
