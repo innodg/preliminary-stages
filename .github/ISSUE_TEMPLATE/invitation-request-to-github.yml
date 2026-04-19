@@ -20,9 +20,12 @@ body:
         **안내**:
 
         - **제출자 본인 확인 차원**에서 지원서 제출시 입력한 정보와 일치해야만 초대장을 발송할 수 있습니다.
+        - **[중요] 제출자와 지원자 정보가 다를 경우, 깃헙 조직에 초대를 받았더라도 부정행위로 간주하고 추후 제명 조치할 수 있습니다.**
         - 초대 요청을 제출하면 GitHub 계정을 만들 때 사용한 이메일 주소로 초대장을 발송합니다.
         - 초대장을 수락하면 조직에 참여할 수 있습니다. 메일이 도착하지 않으면 스팸메일함도 확인해 보세요.
-        - **[중요] 제출자와 지원자 정보가 다를 경우, 깃헙 조직에 초대를 받았더라도 추후 제명 조치할 수 있습니다.**
+        - 초대장 이메일은 대략 아래와 같은 형식으로 발송됩니다.
+
+          <img src="https://raw.githubusercontent.com/innodg/preliminary-stages/refs/heads/main/images/github-invitation-sample.png" alt="GitHub 초대장 이메일 예시" width="640" />
 
   - type: dropdown
     id: request-type
@@ -79,12 +82,11 @@ body:
         **안내**:
 
         - **제출자 본인 확인 차원**에서 지원서 제출시 입력한 정보와 일치해야만 초대장을 발송할 수 있습니다.
+        - **[중요] 제출자와 지원자 정보가 다를 경우, 깃헙 조직에 초대를 받았더라도 부정행위로 간주하고 추후 제명 조치할 수 있습니다.**
         - 초대 요청을 제출하면 GitHub 계정을 만들 때 사용한 이메일 주소로 초대장을 발송합니다.
         - 초대장을 수락하면 조직에 참여할 수 있습니다. 메일이 도착하지 않으면 스팸메일함도 확인해 보세요.
         - 초대장 이메일은 대략 아래와 같은 형식으로 발송됩니다.
 
-          <img src="https://raw.githubusercontent.com/innodg/preliminary-stages/refs/heads/main/images/github-invitation.png" alt="GitHub 초대장 이메일 예시" width="640" />
-
-        - **[중요] 제출자와 지원자 정보가 다를 경우, 깃헙 조직에 초대를 받았더라도 추후 제명 조치할 수 있습니다.**
+          <img src="https://raw.githubusercontent.com/innodg/preliminary-stages/refs/heads/main/images/github-invitation-sample.png" alt="GitHub 초대장 이메일 예시" width="640" />
 
         감사합니다!

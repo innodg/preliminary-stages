@@ -1,0 +1,90 @@
+name: 'C# 자격증 취득 인증'
+
+description: C# 자격증 취득을 인증하기 위한 이슈 템플릿입니다.
+
+title: "[C# 자격증 취득 인증] "
+
+labels:
+  - certification
+  - quest-1
+  - request
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        <br/>
+        환영합니다! C# 자격증 취득을 인증하기 위해 아래 양식을 작성해주세요.
+        <br/>
+
+        **안내**:
+
+        - **[중요] GitHub 조직에 초대장을 받고 수락한 후에 C# 자격증 취득 인증을 진행할 수 있습니다.**
+        - **[중요] 제출자와 응시자 정보가 다를 경우, 인증을 완료하더라도 부정행위로 간주하고 추후 제명 조치할 수 있습니다.**
+        - 자격증은 대략 아래와 같이 보입니다.
+
+          <img src="https://raw.githubusercontent.com/innodg/preliminary-stages/refs/heads/main/images/csharp-cert-sample.png" alt="C# 자격증 샘플 이미지" width="640" />
+
+  - type: dropdown
+    id: request-type
+    attributes:
+      label: 요청 유형
+      options:
+        - C# 자격증 취득 인증
+    validations:
+      required: true
+
+  - type: input
+    id: github-profile-link
+    attributes:
+      label: GitHub 프로필 링크
+      placeholder: https://github.com/octocat
+    validations:
+      required: true
+
+  - type: input
+    id: csharp-cert-link
+    attributes:
+      label: C# 자격증 링크
+      placeholder: https://www.freecodecamp.org/certification/kgaebal/foundational-c-sharp-with-microsoft
+    validations:
+      required: true
+
+  - type: input
+    id: csharp-cert-name
+    attributes:
+      label: C# 자격증 이름
+      placeholder: Foundational C# with Microsoft (자격증에 있는 그대로 정확하게 입력해 주세요)
+    validations:
+      required: true
+
+  - type: input
+    id: csharp-cert-candidate-name
+    attributes:
+      label: C# 자격증 응시자 이름
+      placeholder: 김개발 (자격증에 있는 이름 그대로 정확하게 입력해 주세요)
+    validations:
+      required: true
+
+  - type: input
+    id: csharp-cert-date
+    attributes:
+      label: C# 자격증 취득일
+      placeholder: 2026-04-20 (yyyy-mm-dd 형식으로 입력해 주세요)
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        <br/>
+
+        **안내**:
+
+        - **[중요] GitHub 조직에 초대장을 받고 수락한 후에 C# 자격증 취득 인증을 진행할 수 있습니다.**
+        - **[중요] 제출자와 응시자 정보가 다를 경우, 인증을 완료하더라도 부정행위로 간주하고 추후 제명 조치할 수 있습니다.**
+        - 자격증은 대략 아래와 같이 보입니다.
+
+          <img src="https://raw.githubusercontent.com/innodg/preliminary-stages/refs/heads/main/images/csharp-cert-sample.png" alt="C# 자격증 샘플 이미지" width="640" />
+
+        감사합니다!
