@@ -81,12 +81,12 @@ jobs:
           path: operations
           token: ${{ steps.bot-token.outputs.token }}
 
-      - name: Restore applicant details
-        shell: pwsh
-        env:
-          APPLICANTS: ${{ secrets.APPLICANTS }}
-        run: |
-          $env:APPLICANTS | Out-File -FilePath "${{ github.workspace }}/operations/data/applicants.csv" -Encoding utf8
+      # - name: Restore applicant details
+      #   shell: pwsh
+      #   env:
+      #     APPLICANTS: ${{ secrets.APPLICANTS }}
+      #   run: |
+      #     $env:APPLICANTS | Out-File -FilePath "${{ github.workspace }}/operations/data/applicants.csv" -Encoding utf8
 
       - name: Validate issue
         shell: bash
@@ -96,6 +96,7 @@ jobs:
           dotnet run --project ./src/QuestValidator.IssuePayloadCheck.ConsoleApp -- \
             --input "${{ github.workspace }}/payload.json" \
             --output "${{ github.workspace }}/issue.json" \
+            --start-date "${{ vars.START_DATE_INVITATION }}" \
             --due-date "${{ vars.DUE_DATE_INVITATION }}"
           
           popd
@@ -240,7 +241,13 @@ jobs:
           body: |
             👋🏼 @${{ steps.issue.outputs.githubId }}님!
 
-            GitHub 계정에 등록한 이메일 주소로 초대장을 발송했습니다. 초대장을 수락하면 조직에 참여할 수 있습니다. 감사합니다!
+            GitHub 계정에 등록한 이메일 주소로 초대장을 발송했습니다. 초대장을 수락하면 조직에 참여할 수 있습니다.
+            
+            아래는 초대장 이메일의 예시입니다. 메일이 도착하지 않으면 스팸메일함도 확인해 보세요.
+
+            <img src="https://raw.githubusercontent.com/innodg/preliminary-stages/refs/heads/main/images/github-invitation.png" alt="GitHub 초대장 이메일 예시" width="640" />
+
+            감사합니다!
 
       - name: Close issue - Complete
         if: |

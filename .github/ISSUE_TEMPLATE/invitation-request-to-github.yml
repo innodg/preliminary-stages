@@ -15,12 +15,14 @@ body:
       value: |
         <br/>
         환영합니다! GitHub 조직에 초대를 요청하기 위해 아래 양식을 작성해주세요.
+        <br/>
 
         **안내**:
 
         - **제출자 본인 확인 차원**에서 지원서 제출시 입력한 정보와 일치해야만 초대장을 발송할 수 있습니다.
         - 초대 요청을 제출하면 GitHub 계정을 만들 때 사용한 이메일 주소로 초대장을 발송합니다.
         - 초대장을 수락하면 조직에 참여할 수 있습니다. 메일이 도착하지 않으면 스팸메일함도 확인해 보세요.
+        - **[중요] 제출자와 지원자 정보가 다를 경우, 깃헙 조직에 초대를 받았더라도 추후 제명 조치할 수 있습니다.**
 
   - type: dropdown
     id: request-type
@@ -48,37 +50,26 @@ body:
     validations:
       required: true
 
-  - type: input
-    id: name
+  - type: markdown
     attributes:
-      label: 이름
-      placeholder: 김개발
+      value: |
+        <br/>
+
+        아래 링크를 통해 본인 확인을 위한 참가자 개인 정보를 입력해 주세요.
+
+        <a href="https://forms.cloud.microsoft/r/QtnkD0rYha" target="_blank">참가자 개인 정보 입력 양식</a>
+
+  - type: dropdown
+    id: privacy-submission-confirmation
+    attributes:
+      label: 위 참가자 개인 정보 입력 양식을 제출하셨나요?
+      options:
+        - 선택
+        - 예
+        - 아니오
+      default: 0
     validations:
       required: true
-
-  - type: input
-    id: school
-    attributes:
-      label: 학교명
-      placeholder: 바이브고등학교 (지원서 작성시 입력한 학교명과 동일하게 작성해주세요)
-    validations:
-      required: true
-
-  - type: input
-    id: student-contact
-    attributes:
-      label: 학생 연락처
-      placeholder: 010-1234-5678 (지원서 작성시 입력한 학생 연락처와 동일하게 작성해주세요. 지원서에 학생 연락처를 기입하지 않은 경우 생략 가능합니다.)
-    validations:
-      required: false
-
-  - type: input
-    id: parent-contact
-    attributes:
-      label: 학부모 연락처
-      placeholder: 010-1234-5678 (지원서 작성시 입력한 학부모 연락처와 동일하게 작성해주세요. 지원서에 학부모 연락처를 기입하지 않은 경우 생략 가능합니다.)
-    validations:
-      required: false
 
   - type: markdown
     attributes:
@@ -90,5 +81,10 @@ body:
         - **제출자 본인 확인 차원**에서 지원서 제출시 입력한 정보와 일치해야만 초대장을 발송할 수 있습니다.
         - 초대 요청을 제출하면 GitHub 계정을 만들 때 사용한 이메일 주소로 초대장을 발송합니다.
         - 초대장을 수락하면 조직에 참여할 수 있습니다. 메일이 도착하지 않으면 스팸메일함도 확인해 보세요.
+        - 초대장 이메일은 대략 아래와 같은 형식으로 발송됩니다.
+
+          <img src="https://raw.githubusercontent.com/innodg/preliminary-stages/refs/heads/main/images/github-invitation.png" alt="GitHub 초대장 이메일 예시" width="640" />
+
+        - **[중요] 제출자와 지원자 정보가 다를 경우, 깃헙 조직에 초대를 받았더라도 추후 제명 조치할 수 있습니다.**
 
         감사합니다!
