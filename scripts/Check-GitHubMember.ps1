@@ -19,7 +19,13 @@ if ($statusLine -match 'HTTP/[\d\.]+\s+(\d{3})') {
 }
 
 switch ($statusCode) {
-    204     { return $true }
-    404     { return $false }
+    204     { $result = $true.ToString().ToLower(); break }
+    404     { $result = $false.ToString().ToLower(); break }
     default { throw "Unexpected response (status: $statusCode).`n$output" }
 }
+
+# Reset exit code: `gh api` exits non-zero on 404, which would otherwise
+# propagate as the script's process exit code.
+$global:LASTEXITCODE = 0
+Write-Output $result
+exit 0

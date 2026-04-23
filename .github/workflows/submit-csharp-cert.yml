@@ -204,7 +204,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.bot-token.outputs.token }}
         run: |
-          $isMember = ${{ github.workspace }}/scripts/Check-GitHubMember.ps1 `
+          $isMember = & "${{ github.workspace }}/scripts/Check-GitHubMember.ps1" `
             -Username "${{ steps.issue.outputs.githubId }}"
 
           echo "isMember=$isMember" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf-8 -Append
