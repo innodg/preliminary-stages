@@ -272,8 +272,19 @@ jobs:
         shell: pwsh
         run: |
           $projects = Get-ChildItem -Path ./quest/*.csproj -Recurse
-          $project = $projects[0]
-          $launchSettings = Get-Content -Path "$($project.Directory.FullName)/Properties/launchSettings.json" | ConvertFrom-Json
+
+          $project = if ($projects.Count -ge 1) {
+            $projects[0]
+          } else {
+            $null
+          }
+
+          $launchSettings = if ($project -ne $null) {
+            Get-Content -Path "$($project.Directory.FullName)/Properties/launchSettings.json" | ConvertFrom-Json
+          } else {
+            $null
+          }
+
           $appUrl = if ($launchSettings -ne $null) {
             $launchSettings.profiles.http.applicationUrl
           } else {
